@@ -4,6 +4,7 @@ import 'package:evidyalaya/screens/auth/login.dart';
 import 'package:evidyalaya/screens/home.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
+import 'package:evidyalaya/widgets/no_internet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
                 case ConnectionStates.checking:
                   return const Loading();
                 case ConnectionStates.notConnected:
-                  return Container();
+                  return const NoInternet();
 
                 case ConnectionStates.error:
                   return const ErrorScreen();
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
                           body: Loading(),
                         );
                       case AuthState.loggedIn:
-                        return Home();
+                        return const Home();
                       case AuthState.loggedOut:
                         return const Login();
                       case AuthState.error:

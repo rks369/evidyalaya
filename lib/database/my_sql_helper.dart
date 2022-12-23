@@ -59,7 +59,8 @@ class MySQLHelper {
                 email: value.first['email'],
                 phone: value.first['phone'],
                 userName: value.first['username'],
-                designation: value.first['designation']);
+                designation: value.first['designation'],
+                profilePicture: value.first['profile_picture']);
           }
         }
       }).onError((error, stackTrace) {
@@ -82,7 +83,8 @@ class MySQLHelper {
               email: value.first['email'],
               phone: value.first['phone'],
               userName: value.first['username'],
-              designation: value.first['designation']);
+              designation: value.first['designation'],
+              profilePicture: value.first['profile_picture']);
         }
       }).onError((error, stackTrace) {
         return null;
