@@ -1,4 +1,3 @@
-import 'package:evidyalaya/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class NoInternet extends StatelessWidget {

@@ -1,5 +1,4 @@
 import 'package:evidyalaya/utils/constant.dart';
-import 'package:evidyalaya/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -24,7 +23,7 @@ class Home extends StatelessWidget {
             const SizedBox(
               height: 15.0,
             ),
-            Text(
+            const Text(
               'Ritesh',
             ),
             const SizedBox(
@@ -33,13 +32,13 @@ class Home extends StatelessWidget {
             const SizedBox(
               height: 5.0,
             ),
-            Text(
+            const Text(
               'Student',
             ),
             const SizedBox(
               height: 5.0,
             ),
-            Text(
+            const Text(
               '+91 87087272170',
             ),
             const SizedBox(

@@ -2,7 +2,6 @@ import 'package:evidyalaya/bloc/connection_cubit.dart';
 import 'package:evidyalaya/screens/auth/login.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
-import 'package:evidyalaya/widgets/no_internet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

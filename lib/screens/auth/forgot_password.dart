@@ -1,7 +1,6 @@
 import 'package:evidyalaya/screens/auth/login.dart';
 import 'package:evidyalaya/screens/home.dart';
 import 'package:evidyalaya/services/change_screen.dart';
-import 'package:evidyalaya/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class ResetPassword extends StatelessWidget {
