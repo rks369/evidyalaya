@@ -1,3 +1,4 @@
+import 'package:evidyalaya/screens/director/director_dashboard.dart';
 import 'package:evidyalaya/widgets/slide_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -6,12 +7,14 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> dashBoardList = [const DirectorDashBoard()];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('E-Vidyalaya'),
       ),
       drawer: const SideDrawer(),
-      body: const Text('Home'),
+      body: dashBoardList[0],
     );
   }
 }
