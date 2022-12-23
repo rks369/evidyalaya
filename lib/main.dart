@@ -1,5 +1,7 @@
+import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/bloc/connection_cubit.dart';
 import 'package:evidyalaya/screens/auth/login.dart';
+import 'package:evidyalaya/screens/home.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [BlocProvider(create: (context) => ConnectionCubit())],
+        providers: [
+          BlocProvider(create: (context) => ConnectionCubit()),
+          BlocProvider(create: (context) => AuthCubit())
+        ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
@@ -29,9 +34,6 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.dark),
           title: 'E-Vidyalaya',
           home: Scaffold(
-            appBar: AppBar(
-              title: const Text('E-Vidyalaya'),
-            ),
             body: BlocBuilder<ConnectionCubit, ConnectionStates>(
                 builder: (context, state) {
               switch (state) {
@@ -44,7 +46,27 @@ class MyApp extends StatelessWidget {
                   return const ErrorScreen();
 
                 case ConnectionStates.connected:
-                  return const Login();
+                  return BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, state) {
+                    switch (state) {
+                      case AuthState.init:
+                        return const Scaffold(
+                          body: Loading(),
+                        );
+                      case AuthState.loading:
+                        return const Scaffold(
+                          body: Loading(),
+                        );
+                      case AuthState.loggedIn:
+                        return Home();
+                      case AuthState.loggedOut:
+                        return const Login();
+                      case AuthState.error:
+                        return const Scaffold(
+                          body: ErrorScreen(),
+                        );
+                    }
+                  });
               }
             }),
           ),

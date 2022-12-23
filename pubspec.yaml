@@ -17,6 +17,7 @@ dependencies:
   flutter_spinkit: ^5.1.0
   mysql1: ^0.20.0
   crypto: ^3.0.2
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

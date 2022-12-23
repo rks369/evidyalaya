@@ -68,4 +68,25 @@ class MySQLHelper {
       });
     });
   }
+
+  static Future<UserModel?> getUser(int id, String domianName) async {
+    return await MySqlConnection.connect(getConnctionSettings(domianName))
+        .then((conn) {
+      return conn.query('select * from users where id = ?', [id]).then((value) {
+        if (value.isEmpty) {
+          return null;
+        } else {
+          return UserModel(
+              id: value.first['id'],
+              name: value.first['name'],
+              email: value.first['email'],
+              phone: value.first['phone'],
+              userName: value.first['username'],
+              designation: value.first['designation']);
+        }
+      }).onError((error, stackTrace) {
+        return null;
+      });
+    });
+  }
 }

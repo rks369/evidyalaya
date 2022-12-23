@@ -1,3 +1,4 @@
+import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/my_sql_helper.dart';
 import 'package:evidyalaya/screens/auth/forgot_password.dart';
 import 'package:evidyalaya/screens/home.dart';
@@ -5,12 +6,15 @@ import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/services/email_validator.dart';
 import 'package:evidyalaya/utils/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final blocProvider = BlocProvider.of<AuthCubit>(context);
+
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController email = TextEditingController();
     final TextEditingController password = TextEditingController();
@@ -118,6 +122,7 @@ class Login extends StatelessWidget {
                       ),
                       FilledElevatedButoon(
                         onPressed: () async {
+                          showProgressDialog(context);
                           if (formKey.currentState!.validate()) {
                             String userId = email.text;
                             String pass = password.text;
@@ -128,7 +133,10 @@ class Login extends StatelessWidget {
                               if (result) {
                                 MySQLHelper.login(context, userId, pass, domain)
                                     .then((userModel) {
-                                  print(userModel);
+                                  blocProvider.login(userModel!,domain);
+                                  Navigator.pop(context);
+                                  changeScreenReplacement(
+                                      context, const Home());
                                 }).onError((error, stackTrace) {
                                   showErrorMessage(context,
                                       'Soe=mething Went Wrong !$error');
