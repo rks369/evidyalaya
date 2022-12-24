@@ -7,15 +7,16 @@ import 'package:evidyalaya/services/show_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DirectorAddTeacher extends StatelessWidget {
-  const DirectorAddTeacher({super.key});
+class DirectorAddStudent extends StatelessWidget {
+  const DirectorAddStudent({super.key});
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final String domain = BlocProvider.of<AuthCubit>(context).domainName;
 
     final TextEditingController name = TextEditingController();
-    final String domain = BlocProvider.of<AuthCubit>(context).domainName;
+    final TextEditingController roll = TextEditingController();
 
     final TextEditingController email = TextEditingController();
     final TextEditingController mobile = TextEditingController();
@@ -48,14 +49,14 @@ class DirectorAddTeacher extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    'Add Teacher',
+                    'Add Student',
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   const SizedBox(
                     height: 15,
                   ),
                   const Text(
-                    'Enter Details to Add Teacher',
+                    'Enter Details to Add Student',
                   ),
                   const SizedBox(
                     height: 15,
@@ -79,6 +80,27 @@ class DirectorAddTeacher extends StatelessWidget {
                       labelText: 'Name',
                       hintText: 'Enter Name',
                       prefixIcon: Icon(Icons.person),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: roll,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Enter Roll Number';
+                      } else if (value.length < 3) {
+                        return 'Roll Number Should be of 3 Character';
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Roll Number',
+                      hintText: 'Enter RollNumber',
+                      prefixIcon: Icon(Icons.numbers),
                     ),
                   ),
                   const SizedBox(
@@ -139,20 +161,21 @@ class DirectorAddTeacher extends StatelessWidget {
                             phone: mobile.text,
                             // ignore: prefer_interpolation_to_compose_strings
                             userName: name.text.split(' ')[0] +
+                                roll.text +
                                 '@' +
                                 domain +
                                 '.evidyalaya.in',
-                            designation: 'Teacher',
+                            designation: 'Student',
                             profilePicture: 'profilePicture');
 
-                        DirectorMySQLHelper.addteacher(
+                        DirectorMySQLHelper.addStudent(
                                 context, userModel, domain)
                             .then((value) {
                           Navigator.pop(context);
                         });
                       }
                     },
-                    child: const Text('Add teacher'),
+                    child: const Text('Add Student'),
                   )
                 ],
               ),
