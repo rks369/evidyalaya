@@ -1,6 +1,8 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
 import 'package:evidyalaya/models/user_model.dart';
+import 'package:evidyalaya/screens/director/teachers/director_add_teacher.dart';
+import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,9 @@ class DirectorTeachers extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            changeScreen(context, DirectorAddTeacher());
+          },
           child: const Icon(Icons.add),
         ),
         body: FutureBuilder(

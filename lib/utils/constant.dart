@@ -1,6 +1,14 @@
 import 'dart:convert';
 
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:mysql1/mysql1.dart';
+
+final secretKey = utf8.encode('evidyalaya');
+// ignore: deprecated_member_use
+final smtpServer = gmail('evidyalayaerp@gmail.com', "iamzgwdzjjcgolpr");
+
+const senderAdress = Address('evidyalayaerp@gmail.com', 'Admin E-Vidyalaya');
 
 const String dummyUserProfileLink =
     'https://images.unsplash.com/photo-1566753323558-f4e0952af115?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1021&q=80';
@@ -12,8 +20,6 @@ ConnectionSettings getConnctionSettings(String db) {
   return ConnectionSettings(
       host: '192.168.214.134', port: 3306, user: 'root', db: db);
 }
-
-final secretKey = utf8.encode('evidyalaya');
 
 const String privacyPolicy = '''Privacy Policy
 Dummy Trade respects the privacy of its visitors by applying practices designed to protect the privacy of website users. We understand that information is the basis of human relationships in the virtual space and that the collection and responsible use of data is vitally important for users who browse our website to feel protected.

@@ -62,26 +62,25 @@ class Chat extends StatelessWidget {
               },
             ),
           ),
-          Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: msg,
-                  ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  controller: msg,
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      fireStore.collection("message").add({
-                        'msg': msg.text,
-                        'time': DateTime.now(),
-                        'senderId': blocProvider.userId
-                      });
-                    },
-                    child: const Text('Send')),
-              ],
-            ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    msg.clear();
+                    fireStore.collection("message").add({
+                      'msg': msg.text,
+                      'time': DateTime.now(),
+                      'senderId': blocProvider.userId
+                    });
+                  },
+                  child: const Text('Send')),
+            ],
           ),
         ],
       ),
