@@ -9,7 +9,7 @@ class DirectorChat extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Classes',
+            'Chat',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),

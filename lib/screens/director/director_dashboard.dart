@@ -1,5 +1,7 @@
 import 'package:evidyalaya/screens/director/director_chat.dart';
 import 'package:evidyalaya/screens/director/director_classes.dart';
+import 'package:evidyalaya/screens/director/director_students.dart';
+import 'package:evidyalaya/screens/director/director_teachres.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -23,10 +25,14 @@ class DirectorDashBoard extends StatelessWidget {
             imagePath: 'images/teacher.png',
             title: 'Teachers',
             onPress: () {
-              changeScreen(context, const DirectorClasses());
+              changeScreen(context, const DirectorTeachers());
             }),
         DashBoardTiles(
-            imagePath: 'images/student.png', title: 'Students', onPress: () {}),
+            imagePath: 'images/student.png',
+            title: 'Students',
+            onPress: () {
+              changeScreen(context, const DirectorStudents());
+            }),
         DashBoardTiles(
             imagePath: 'images/chat.png',
             title: 'Chat',
