@@ -38,7 +38,10 @@ class DirectorChatTeachers extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
-                      leading: const Icon(Icons.school),
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(list[index].profilePicture),
+                      ),
                       title: Text(list[index].name),
                       onTap: () {
                         changeScreen(

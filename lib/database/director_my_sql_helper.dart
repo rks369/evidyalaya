@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/models/class_model.dart';
+import 'package:evidyalaya/models/subject_model.dart';
 import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/utils/constant.dart';
 import 'package:evidyalaya/utils/custom_snack_bar.dart';
@@ -82,6 +83,30 @@ class DirectorMySQLHelper {
     });
   }
 
+  static Future<List<SubjectModel>> getSubjectList(
+      String domainName, int classId) {
+    List<SubjectModel> teacherList = [];
+    return MySqlConnection.connect(getConnctionSettings(domainName))
+        .then((conn) {
+      return conn.query('SELECT * FROM `subject_list`  WHERE `class_id` = ?',
+          [classId]).then((result) {
+        for (var row in result) {
+          print(row);
+          teacherList.add(SubjectModel(
+              id: row['subject_id'],
+              classId: row['class_id'],
+              name: row['subject_name'],
+              teacherId: row['subject_teacher_id']));
+        }
+        return teacherList;
+      }).onError((error, stackTrace) {
+        return teacherList;
+      });
+    }).onError((error, stackTrace) {
+      return teacherList;
+    });
+  }
+
   static Future<void> createClass(
       BuildContext context, String className, UserModel tecaher) {
     final bloacProvider = BlocProvider.of<AuthCubit>(context);
@@ -99,6 +124,40 @@ class DirectorMySQLHelper {
           ..subject = 'You Are Now Class In-charger Of $className'
           ..text =
               'Welcome To E-Vidyalaya.\nYou Are Now Class In-charger Of $className';
+
+        await send(message, smtpServer).whenComplete(() {
+          showSuccessMessage(context, 'Class Created Sucessfully');
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
+        return;
+      }).onError((error, stackTrace) {
+        conn.close();
+
+        showErrorMessage(context, 'Something went wrong $error');
+      });
+    }).onError((error, stackTrace) {
+      showErrorMessage(context, 'Something went wrong $error');
+    });
+  }
+
+  static Future<void> addSubject(BuildContext context, int classId,
+      String subjectName, UserModel tecaher) {
+    final bloacProvider = BlocProvider.of<AuthCubit>(context);
+
+    return MySqlConnection.connect(
+            getConnctionSettings(bloacProvider.domainName))
+        .then((conn) {
+      return conn.query(
+          'INSERT INTO `subject_list` (`subject_id`, `subject_name`, `class_id`, `subject_teacher_id`) VALUES (NULL, ?, ?, ?);',
+          [subjectName, classId, tecaher.id]).then((value) async {
+        conn.close();
+        final message = Message()
+          ..from = senderAdress
+          ..recipients.add(tecaher.email)
+          ..subject = 'You Are Now Subject Teacher Of $subjectName'
+          ..text =
+              'Welcome To E-Vidyalaya.\nYou Are Now Subject Teacher Of $subjectName';
 
         await send(message, smtpServer).whenComplete(() {
           showSuccessMessage(context, 'Class Created Sucessfully');

@@ -1,6 +1,9 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
+import 'package:evidyalaya/models/class_model.dart';
+import 'package:evidyalaya/models/subject_model.dart';
 import 'package:evidyalaya/models/user_model.dart';
+import 'package:evidyalaya/screens/director/classes/director_class_add_subject.dart';
 import 'package:evidyalaya/screens/director/student/director_add_student.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
@@ -8,8 +11,9 @@ import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DirectorStudents extends StatelessWidget {
-  const DirectorStudents({super.key});
+class DirectorClassSubjects extends StatelessWidget {
+  final classId;
+  const DirectorClassSubjects({super.key, required this.classId});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class DirectorStudents extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Students',
+            'Subjetcs',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -27,18 +31,23 @@ class DirectorStudents extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          changeScreen(context, const DirectorAddStudent());
+          changeScreen(
+              context,
+              DirectorClassAddSubject(
+                classId: classId,
+              ));
         },
         child: const Icon(Icons.add),
       ),
       body: FutureBuilder(
-          future: DirectorMySQLHelper.getStudentList(blocProvider.domainName),
+          future: DirectorMySQLHelper.getSubjectList(
+              blocProvider.domainName, classId),
           builder: (context, snapshot) {
             if (snapshot.hasError) return const ErrorScreen();
             if (!snapshot.hasData) {
               return const Loading();
             } else {
-              List<UserModel> list = snapshot.data!;
+              List<SubjectModel> list = snapshot.data!;
 
               if (list.isEmpty) {
                 return Center(
@@ -54,10 +63,7 @@ class DirectorStudents extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(list[index].profilePicture),
-                        ),
+                        leading: CircleAvatar(child: Text(list[index].name[0])),
                         title: Text(list[index].name),
                       ),
                     );
