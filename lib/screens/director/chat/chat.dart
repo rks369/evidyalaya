@@ -17,6 +17,13 @@ class Chat extends StatelessWidget {
 
     final blocProvider = BlocProvider.of<AuthCubit>(context);
 
+    late String chatId;
+    if (blocProvider.userId < reciverId) {
+      chatId = '${blocProvider.userId} $reciverId';
+    } else if (blocProvider.userId > reciverId) {
+      chatId = '$reciverId ${blocProvider.userId}';
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -33,14 +40,9 @@ class Chat extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: fireStore
-                  .collection('message')
-                  .where('senderId', isEqualTo: blocProvider.userId)
-                  .where('recieverId', isEqualTo: reciverId)
-                  .orderBy('time')
-                  .snapshots(),
-              builder: (context, snapshot) {
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: fireStore.collection('message').doc(chatId).snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(
                     child: CircularProgressIndicator(
@@ -48,8 +50,7 @@ class Chat extends StatelessWidget {
                     ),
                   );
                 }
-                final messages = List.of(snapshot.data!.docs.reversed);
-
+                var messages = snapshot.data!.get('messages') as List;
                 if (messages.isEmpty) {
                   return const Center(
                     child: Text('No message Exixts !!!'),
@@ -60,9 +61,9 @@ class Chat extends StatelessWidget {
                     reverse: true,
                     itemBuilder: (context, index) {
                       return MessageBubble(
-                          sender: messages[index].get('senderId').toString(),
-                          text: messages[index].get('msg'),
-                          isMe: true);
+                          text: messages[index]['msg'],
+                          isMe: messages[index]['senderId'] ==
+                              blocProvider.userId);
                     });
               },
             ),
@@ -77,13 +78,38 @@ class Chat extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    fireStore.collection("message").add({
-                      'msg': msg.text,
-                      'time': DateTime.now(),
-                      'senderId': blocProvider.userId,
-                      'recieverId': reciverId
-                    }).then((value) {
-                      msg.clear();
+                    fireStore
+                        .collection('message')
+                        .doc(chatId)
+                        .get()
+                        .then((value) {
+                      if (value.exists) {
+                        fireStore.collection("message").doc(chatId).update({
+                          'messages': FieldValue.arrayUnion([
+                            {
+                              'msg': msg.text,
+                              'time': DateTime.now(),
+                              'senderId': blocProvider.userId,
+                              'chatId': chatId
+                            }
+                          ])
+                        }).then((value) {
+                          msg.clear();
+                        });
+                      } else {
+                        fireStore.collection("message").doc(chatId).set({
+                          'messages': [
+                            {
+                              'msg': msg.text,
+                              'time': DateTime.now(),
+                              'senderId': blocProvider.userId,
+                              'chatId': chatId
+                            }
+                          ]
+                        }).then((value) {
+                          msg.clear();
+                        });
+                      }
                     });
                   },
                   child: const Text('Send')),
