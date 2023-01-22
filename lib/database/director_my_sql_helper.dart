@@ -91,7 +91,6 @@ class DirectorMySQLHelper {
       return conn.query('SELECT * FROM `subject_list`  WHERE `class_id` = ?',
           [classId]).then((result) {
         for (var row in result) {
-          print(row);
           teacherList.add(SubjectModel(
               id: row['subject_id'],
               classId: row['class_id'],

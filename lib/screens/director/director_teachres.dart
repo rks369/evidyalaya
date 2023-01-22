@@ -54,7 +54,7 @@ class DirectorTeachers extends StatelessWidget {
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: ListTile(
                           leading: CircleAvatar(
                             backgroundImage:

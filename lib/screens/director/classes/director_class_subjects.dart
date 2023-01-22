@@ -1,10 +1,7 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
-import 'package:evidyalaya/models/class_model.dart';
 import 'package:evidyalaya/models/subject_model.dart';
-import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/screens/director/classes/director_class_add_subject.dart';
-import 'package:evidyalaya/screens/director/student/director_add_student.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
@@ -12,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DirectorClassSubjects extends StatelessWidget {
-  final classId;
+  final int classId;
   const DirectorClassSubjects({super.key, required this.classId});
 
   @override

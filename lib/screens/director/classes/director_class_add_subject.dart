@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DirectorClassAddSubject extends StatefulWidget {
-  final classId;
+  final int classId;
   const DirectorClassAddSubject({super.key, required this.classId});
 
   @override
