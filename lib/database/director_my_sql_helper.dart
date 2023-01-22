@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/models/class_model.dart';
+import 'package:evidyalaya/models/notes_model.dart';
 import 'package:evidyalaya/models/subject_model.dart';
 import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/utils/constant.dart';
@@ -106,6 +107,29 @@ class DirectorMySQLHelper {
     });
   }
 
+  static Future<List<NotesModel>> getNotesList(
+      String domainName, int subjectId) {
+    List<NotesModel> teacherList = [];
+    return MySqlConnection.connect(getConnctionSettings(domainName))
+        .then((conn) {
+      return conn.query('SELECT * FROM `notes_list` WHERE `subject_id` = ?',
+          [subjectId]).then((result) {
+        for (var row in result) {
+          teacherList.add(NotesModel(
+              id: row['note_id'],
+              title: row['note_title'],
+              ext: row['note_ext'],
+              url: row['note_url']));
+        }
+        return teacherList;
+      }).onError((error, stackTrace) {
+        return teacherList;
+      });
+    }).onError((error, stackTrace) {
+      return teacherList;
+    });
+  }
+
   static Future<List<SubjectModel>> getAllSubjectList(
     String domainName,
   ) {
@@ -192,6 +216,31 @@ class DirectorMySQLHelper {
           Navigator.pop(context);
           Navigator.pop(context);
         });
+        return;
+      }).onError((error, stackTrace) {
+        conn.close();
+
+        showErrorMessage(context, 'Something went wrong $error');
+      });
+    }).onError((error, stackTrace) {
+      showErrorMessage(context, 'Something went wrong $error');
+    });
+  }
+
+  static Future<void> addNote(BuildContext context, int subjectId, String title,
+      String ext, String url) {
+    final bloacProvider = BlocProvider.of<AuthCubit>(context);
+
+    return MySqlConnection.connect(
+            getConnctionSettings(bloacProvider.domainName))
+        .then((conn) {
+      return conn.query(
+          'INSERT INTO `notes_list` (`note_id`, `subject_id`,`note_title`, `note_ext`, `note_url`) VALUES (NULL,?, ?, ?, ?);',
+          [subjectId, title, ext, url]).then((value) async {
+        conn.close();
+        showSuccessMessage(context, 'Note Added Sucessfully');
+        Navigator.pop(context);
+        Navigator.pop(context);
         return;
       }).onError((error, stackTrace) {
         conn.close();

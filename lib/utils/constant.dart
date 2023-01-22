@@ -42,3 +42,16 @@ const String termsAndCondtionsURL =
 
 const String aboutUsContent =
     "\n\nWelcome to E Cassroom where we share information related to eclassroom. We're dedicated to providing you the very best information and knowledge of the above mentioned topics.\n\n\nWe hope you found all of the information on E Cassroom helpful, as we love to share them with you.\n\nIf you require any more information or have any questions about our site, please feel free to contact us by email at .";
+
+const Map<String, String> extToImage = {
+  '.pdf': 'images/pdf.png',
+  '.ppt': 'images/ppt.png',
+  '.pptx': 'images/ppt.png',
+  '.doc': 'images/pdf.doc',
+  '.docx': 'images/doc.png',
+  '.xls': 'images/excel.doc',
+  '.xlsx': 'images/excel.png',
+  '.zip': 'images/zip.png',
+  '.mp4': 'images/video.png',
+  '.mp3': 'images/audio.png',
+};

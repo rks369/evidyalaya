@@ -1,7 +1,8 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
 import 'package:evidyalaya/models/subject_model.dart';
-import 'package:evidyalaya/screens/director/classes/director_class_add_subject.dart';
+import 'package:evidyalaya/screens/director/classes/subjects/director_class_add_subject.dart';
+import 'package:evidyalaya/screens/director/classes/subjects/notes.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
@@ -60,6 +61,10 @@ class DirectorClassSubjects extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
+                        onTap: () {
+                          changeScreen(
+                              context, Notes(subjectModel: list[index]));
+                        },
                         leading: CircleAvatar(child: Text(list[index].name[0])),
                         title: Text(list[index].name),
                       ),
