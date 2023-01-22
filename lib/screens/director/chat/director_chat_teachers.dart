@@ -41,7 +41,11 @@ class DirectorChatTeachers extends StatelessWidget {
                       leading: const Icon(Icons.school),
                       title: Text(list[index].name),
                       onTap: () {
-                        changeScreen(context, const Chat());
+                        changeScreen(
+                            context,
+                            Chat(
+                              reciverId: list[index].id,
+                            ));
                       },
                     ),
                   );

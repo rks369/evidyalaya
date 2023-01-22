@@ -13,9 +13,10 @@ class DirectorAddTeacher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final String domain = BlocProvider.of<AuthCubit>(context).domainName;
 
     final TextEditingController name = TextEditingController();
-    final String domain = BlocProvider.of<AuthCubit>(context).domainName;
+    final TextEditingController id = TextEditingController();
 
     final TextEditingController email = TextEditingController();
     final TextEditingController mobile = TextEditingController();
@@ -85,6 +86,27 @@ class DirectorAddTeacher extends StatelessWidget {
                     height: 10,
                   ),
                   TextFormField(
+                    controller: id,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Enter Id';
+                      } else if (value.length < 3) {
+                        return 'id Should be of 3 Character';
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'ID',
+                      hintText: 'Enter Id',
+                      prefixIcon: Icon(Icons.numbers),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
                     controller: email,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
@@ -139,6 +161,7 @@ class DirectorAddTeacher extends StatelessWidget {
                             phone: mobile.text,
                             // ignore: prefer_interpolation_to_compose_strings
                             userName: name.text.split(' ')[0] +
+                                id.text +
                                 '@' +
                                 domain +
                                 '.evidyalaya.in',

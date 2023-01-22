@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Chat extends StatelessWidget {
-  const Chat({super.key});
+  final int reciverId;
+  const Chat({super.key, required this.reciverId});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,12 @@ class Chat extends StatelessWidget {
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  fireStore.collection('message').orderBy('time').snapshots(),
+              stream: fireStore
+                  .collection('message')
+                  .where('senderId', isEqualTo: blocProvider.userId)
+                  .where('recieverId', isEqualTo: reciverId)
+                  .orderBy('time')
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(
@@ -72,11 +77,13 @@ class Chat extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    msg.clear();
                     fireStore.collection("message").add({
                       'msg': msg.text,
                       'time': DateTime.now(),
-                      'senderId': blocProvider.userId
+                      'senderId': blocProvider.userId,
+                      'recieverId': reciverId
+                    }).then((value) {
+                      msg.clear();
                     });
                   },
                   child: const Text('Send')),
