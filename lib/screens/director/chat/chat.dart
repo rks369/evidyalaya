@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evidyalaya/bloc/auth_cubit.dart';
-import 'package:evidyalaya/models/message_model.dart';
 import 'package:evidyalaya/widgets/message_bubbel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,7 +1,6 @@
 import 'package:evidyalaya/screens/director/chat/director_chat_classes.dart';
 import 'package:evidyalaya/screens/director/chat/director_chat_students.dart';
 import 'package:evidyalaya/screens/director/chat/director_chat_teachers.dart';
-import 'package:evidyalaya/screens/director/director_teachres.dart';
 import 'package:flutter/material.dart';
 
 class DirectorChat extends StatelessWidget {

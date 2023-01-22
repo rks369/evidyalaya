@@ -23,7 +23,7 @@ class DirectorAddStudent extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Institute'),
+        title: const Text('Add Student'),
       ),
       body: SingleChildScrollView(
         child: Card(

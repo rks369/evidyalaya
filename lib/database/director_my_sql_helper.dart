@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/utils/constant.dart';
 import 'package:evidyalaya/utils/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -56,6 +58,40 @@ class DirectorMySQLHelper {
       });
     }).onError((error, stackTrace) {
       return teacherList;
+    });
+  }
+
+  static Future<void> createClass(
+      BuildContext context, String className, UserModel tecaher) {
+    final bloacProvider = BlocProvider.of<AuthCubit>(context);
+
+    return MySqlConnection.connect(
+            getConnctionSettings(bloacProvider.domainName))
+        .then((conn) {
+      return conn.query(
+          'INSERT INTO `class_list` (`class_id`, `class_name`, `class_teaher_id`) VALUES (NULL, ?, ?);',
+          [className, tecaher.id]).then((value) async {
+        conn.close();
+        final message = Message()
+          ..from = senderAdress
+          ..recipients.add(tecaher.email)
+          ..subject = 'You Are Now Class In-charger Of $className'
+          ..text =
+              'Welcome To E-Vidyalaya.\nYou Are Now Class In-charger Of $className';
+
+        await send(message, smtpServer).whenComplete(() {
+          showSuccessMessage(context, 'Class Created Sucessfully');
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
+        return;
+      }).onError((error, stackTrace) {
+        conn.close();
+
+        showErrorMessage(context, 'Something went wrong $error');
+      });
+    }).onError((error, stackTrace) {
+      showErrorMessage(context, 'Something went wrong $error');
     });
   }
 

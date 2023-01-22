@@ -1,3 +1,5 @@
+import 'package:evidyalaya/screens/director/classes/director_add_class.dart';
+import 'package:evidyalaya/services/change_screen.dart';
 import 'package:flutter/material.dart';
 
 class DirectorClasses extends StatelessWidget {
@@ -15,6 +17,12 @@ class DirectorClasses extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          changeScreen(context, const DirectorAddClass());
+        },
+        child: const Icon(Icons.add),
       ),
       body: const Text('Classes'),
     );

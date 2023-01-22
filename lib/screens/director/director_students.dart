@@ -27,7 +27,7 @@ class DirectorStudents extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          changeScreen(context, DirectorAddStudent());
+          changeScreen(context, const DirectorAddStudent());
         },
         child: const Icon(Icons.add),
       ),
