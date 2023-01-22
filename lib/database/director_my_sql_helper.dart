@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:evidyalaya/bloc/auth_cubit.dart';
+import 'package:evidyalaya/models/class_model.dart';
 import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/utils/constant.dart';
 import 'package:evidyalaya/utils/custom_snack_bar.dart';
@@ -61,6 +62,26 @@ class DirectorMySQLHelper {
     });
   }
 
+  static Future<List<ClassModel>> getClassList(String domainName) {
+    List<ClassModel> teacherList = [];
+    return MySqlConnection.connect(getConnctionSettings(domainName))
+        .then((conn) {
+      return conn.query('SELECT * FROM `class_list`').then((result) {
+        for (var row in result) {
+          teacherList.add(ClassModel(
+              id: row['class_id'],
+              name: row['class_name'],
+              teacherId: row['class_teacher_id']));
+        }
+        return teacherList;
+      }).onError((error, stackTrace) {
+        return teacherList;
+      });
+    }).onError((error, stackTrace) {
+      return teacherList;
+    });
+  }
+
   static Future<void> createClass(
       BuildContext context, String className, UserModel tecaher) {
     final bloacProvider = BlocProvider.of<AuthCubit>(context);
@@ -69,7 +90,7 @@ class DirectorMySQLHelper {
             getConnctionSettings(bloacProvider.domainName))
         .then((conn) {
       return conn.query(
-          'INSERT INTO `class_list` (`class_id`, `class_name`, `class_teaher_id`) VALUES (NULL, ?, ?);',
+          'INSERT INTO `class_list` (`class_id`, `class_name`, `class_teacher_id`) VALUES (NULL, ?, ?);',
           [className, tecaher.id]).then((value) async {
         conn.close();
         final message = Message()
