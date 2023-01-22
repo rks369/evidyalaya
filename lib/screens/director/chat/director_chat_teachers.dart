@@ -47,7 +47,7 @@ class DirectorChatTeachers extends StatelessWidget {
                         changeScreen(
                             context,
                             Chat(
-                              reciverId: list[index].id,
+                              userModel: list[index],
                             ));
                       },
                     ),

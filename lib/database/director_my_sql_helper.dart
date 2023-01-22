@@ -106,6 +106,35 @@ class DirectorMySQLHelper {
     });
   }
 
+  static Future<List<SubjectModel>> getAllSubjectList(
+    String domainName,
+  ) {
+    List<SubjectModel> teacherList = [];
+    return MySqlConnection.connect(getConnctionSettings(domainName))
+        .then((conn) {
+      return conn
+          .query(
+        'SELECT * FROM class_list, subject_list WHERE class_list.class_id=subject_list.class_id;',
+      )
+          .then((result) {
+        for (var row in result) {
+          print(row);
+          teacherList.add(SubjectModel(
+              id: row['subject_id'],
+              classId: row['class_id'],
+              className: row['class_name'],
+              name: row['subject_name'],
+              teacherId: row['subject_teacher_id']));
+        }
+        return teacherList;
+      }).onError((error, stackTrace) {
+        return teacherList;
+      });
+    }).onError((error, stackTrace) {
+      return teacherList;
+    });
+  }
+
   static Future<void> createClass(
       BuildContext context, String className, UserModel tecaher) {
     final bloacProvider = BlocProvider.of<AuthCubit>(context);

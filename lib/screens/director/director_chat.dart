@@ -1,5 +1,6 @@
 import 'package:evidyalaya/screens/director/chat/director_chat_classes.dart';
 import 'package:evidyalaya/screens/director/chat/director_chat_students.dart';
+import 'package:evidyalaya/screens/director/chat/director_chat_subject.dart';
 import 'package:evidyalaya/screens/director/chat/director_chat_teachers.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class DirectorChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: const Center(
@@ -26,6 +27,10 @@ class DirectorChat extends StatelessWidget {
               text: 'Classes',
             ),
             Tab(
+              icon: Icon(Icons.class_),
+              text: 'Subjects',
+            ),
+            Tab(
               icon: Icon(Icons.school),
               text: 'Teachers',
             ),
@@ -37,6 +42,7 @@ class DirectorChat extends StatelessWidget {
         ),
         body: const TabBarView(children: [
           DirectorChatClasses(),
+          DirectorChatSubjects(),
           DirectorChatTeachers(),
           DirectorChatStudents()
         ]),

@@ -55,7 +55,7 @@ class UserProfile extends StatelessWidget {
                   ),
                   CircleAvatar(
                     radius: 100,
-                    child: Image.network(userModel.profilePicture),
+                    backgroundImage: NetworkImage(userModel.profilePicture),
                   ),
                   const SizedBox(
                     height: 5,

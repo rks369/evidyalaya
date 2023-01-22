@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evidyalaya/bloc/auth_cubit.dart';
-import 'package:evidyalaya/models/user_model.dart';
+import 'package:evidyalaya/widgets/group_message_bubbel.dart';
 import 'package:evidyalaya/widgets/message_bubbel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Chat extends StatelessWidget {
-  final UserModel userModel;
-  const Chat({super.key, required this.userModel});
+class GroupChat extends StatelessWidget {
+  final int groupId;
+  final String groupName;
+  const GroupChat({super.key, required this.groupId, required this.groupName});
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +18,16 @@ class Chat extends StatelessWidget {
 
     final blocProvider = BlocProvider.of<AuthCubit>(context);
 
-    late String chatId;
-    if (blocProvider.userId < userModel.id) {
-      chatId = '${blocProvider.userId} ${userModel.id}';
-    } else if (blocProvider.userId > userModel.id) {
-      chatId = '${userModel.id} ${blocProvider.userId}';
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(userModel.profilePicture),
-            ),
+            const Icon(Icons.group),
             const SizedBox(
               width: 10,
             ),
             Text(
-              userModel.name,
+              groupName,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -49,7 +41,10 @@ class Chat extends StatelessWidget {
         children: [
           Expanded(
             child: StreamBuilder<DocumentSnapshot>(
-              stream: fireStore.collection('message').doc(chatId).snapshots(),
+              stream: fireStore
+                  .collection('groupChat')
+                  .doc(groupId.toString())
+                  .snapshots(),
               builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(
@@ -69,7 +64,8 @@ class Chat extends StatelessWidget {
                     itemCount: messages.length,
                     reverse: true,
                     itemBuilder: (context, index) {
-                      return MessageBubble(
+                      return GroupMessageBubble(
+                          senderName: messages[index]['senderName'],
                           text: messages[index]['msg'],
                           isMe: messages[index]['senderId'] ==
                               blocProvider.userId);
@@ -88,31 +84,37 @@ class Chat extends StatelessWidget {
               ElevatedButton(
                   onPressed: () {
                     fireStore
-                        .collection('message')
-                        .doc(chatId)
+                        .collection('groupChat')
+                        .doc(groupId.toString())
                         .get()
                         .then((value) {
                       if (value.exists) {
-                        fireStore.collection("message").doc(chatId).update({
+                        fireStore
+                            .collection("groupChat")
+                            .doc(groupId.toString())
+                            .update({
                           'messages': FieldValue.arrayUnion([
                             {
                               'msg': msg.text,
                               'time': DateTime.now(),
                               'senderId': blocProvider.userId,
-                              'chatId': chatId
+                              'senderName': blocProvider.userModel!.name
                             }
                           ])
                         }).then((value) {
                           msg.clear();
                         });
                       } else {
-                        fireStore.collection("message").doc(chatId).set({
+                        fireStore
+                            .collection("groupChat")
+                            .doc(groupId.toString())
+                            .set({
                           'messages': [
                             {
                               'msg': msg.text,
                               'time': DateTime.now(),
                               'senderId': blocProvider.userId,
-                              'chatId': chatId
+                              'senderName': blocProvider.userModel!.name
                             }
                           ]
                         }).then((value) {
