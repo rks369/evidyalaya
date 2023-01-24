@@ -19,8 +19,7 @@ class Home extends StatelessWidget {
 
     getDashBoard() {
       final blocProvider = BlocProvider.of<AuthCubit>(context);
-      log(blocProvider.userModel!.designation);
-      if (blocProvider.userModel!.designation == 'director') {
+      if (blocProvider.userModel!.designation == 'Director') {
         return dashBoardList[0];
       }
       if (blocProvider.userModel!.designation == 'Teacher') {

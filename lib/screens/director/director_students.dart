@@ -2,6 +2,7 @@ import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
 import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/screens/director/student/director_add_student.dart';
+import 'package:evidyalaya/screens/show_profile.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
@@ -51,14 +52,20 @@ class DirectorStudents extends StatelessWidget {
               return ListView.builder(
                   itemCount: list.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(list[index].profilePicture),
+                    return GestureDetector(
+                      onTap: () {
+                        changeScreen(
+                            context, ShowProfile(userModel: list[index]));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(list[index].profilePicture),
+                          ),
+                          title: Text(list[index].name),
                         ),
-                        title: Text(list[index].name),
                       ),
                     );
                   });

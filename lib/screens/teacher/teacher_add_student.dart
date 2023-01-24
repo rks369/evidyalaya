@@ -174,14 +174,13 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please Enter Mobile Number';
-                      } else if (value.length == 10) {
+                      } else if (value.length != 10) {
                         return 'Mobile Number Should be of 10 digits';
                       } else {
                         return null;
                       }
                     },
                     decoration: const InputDecoration(
-                      
                       border: OutlineInputBorder(),
                       labelText: 'Mobile',
                       hintText: 'Enter Mobile Number',

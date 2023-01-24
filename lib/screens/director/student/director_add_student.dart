@@ -1,5 +1,6 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
+import 'package:evidyalaya/models/class_model.dart';
 import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/screens/auth/login.dart';
 import 'package:evidyalaya/services/email_validator.dart';
@@ -7,8 +8,30 @@ import 'package:evidyalaya/services/show_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DirectorAddStudent extends StatelessWidget {
+class DirectorAddStudent extends StatefulWidget {
   const DirectorAddStudent({super.key});
+
+  @override
+  State<DirectorAddStudent> createState() => _DirectorAddStudentState();
+}
+
+class _DirectorAddStudentState extends State<DirectorAddStudent> {
+  List<ClassModel> classList = [];
+  @override
+  void initState() {
+    getClassList();
+    super.initState();
+  }
+
+  getClassList() async {
+    final blocProvider = BlocProvider.of<AuthCubit>(context);
+
+    DirectorMySQLHelper.getClassList(
+      blocProvider.domainName,
+    ).then((value) {
+      classList = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +43,8 @@ class DirectorAddStudent extends StatelessWidget {
 
     final TextEditingController email = TextEditingController();
     final TextEditingController mobile = TextEditingController();
+
+    int currentClass = -1;
 
     return Scaffold(
       appBar: AppBar(
@@ -92,8 +117,12 @@ class DirectorAddStudent extends StatelessWidget {
                         hintText: 'Select Class ',
                         prefixIcon: Icon(Icons.class_),
                       ),
-                      items: [],
-                      onChanged: (value) {}),
+                      items: classList.map((e) {
+                        return DropdownMenuItem(value: e, child: Text(e.name));
+                      }).toList(),
+                      onChanged: (value) {
+                        currentClass = value!.id;
+                      }),
                   const SizedBox(
                     height: 10,
                   ),
@@ -146,7 +175,7 @@ class DirectorAddStudent extends StatelessWidget {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please Enter Mobile Number';
-                      } else if (value.length < 10) {
+                      } else if (value.length != 10) {
                         return 'Mobile Number Should be of 10 digits';
                       } else {
                         return null;
@@ -181,7 +210,7 @@ class DirectorAddStudent extends StatelessWidget {
                             profilePicture: 'profilePicture');
 
                         DirectorMySQLHelper.addStudent(
-                                context, userModel, domain,-1)
+                                context, userModel, domain, currentClass)
                             .then((value) {
                           Navigator.pop(context);
                         });
