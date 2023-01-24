@@ -268,7 +268,7 @@ class DirectorMySQLHelper {
             passwordDigest,
             userModel.userName,
             userModel.designation,
-            userModel.profilePicture
+            defaultProfilePicture
           ]).then((value) async {
         conn.close();
         final message = Message()
@@ -294,15 +294,15 @@ class DirectorMySQLHelper {
     });
   }
 
-  static Future<void> addStudent(
-      BuildContext context, UserModel userModel, String domain) {
+  static Future<void> addStudent(BuildContext context, UserModel userModel,
+      String domain, int currentClass) {
     String password = 'student@123';
     String userName = userModel.userName;
     final hmacSha256 = Hmac(sha256, secretKey); // HMAC-SHA256
     final passwordDigest = hmacSha256.convert(utf8.encode(password)).toString();
     return MySqlConnection.connect(getConnctionSettings(domain)).then((conn) {
       return conn.query(
-          'INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `username`,`designation`,`profile_picture`) VALUES (NULL,?,?, ?, ?, ?,?,?);',
+          'INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `username`,`designation`,`profile_picture`,`current_class`) VALUES (NULL,?,?, ?, ?, ?,?,?,?);',
           [
             userModel.name,
             userModel.email,
@@ -310,7 +310,8 @@ class DirectorMySQLHelper {
             passwordDigest,
             userModel.userName,
             userModel.designation,
-            userModel.profilePicture
+            defaultProfilePicture,
+            currentClass
           ]).then((value) async {
         conn.close();
         final message = Message()

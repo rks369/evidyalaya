@@ -1,5 +1,6 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
+import 'package:evidyalaya/database/teacher_my_sql_helper.dart';
 import 'package:evidyalaya/models/subject_model.dart';
 import 'package:evidyalaya/screens/director/classes/subjects/director_class_add_subject.dart';
 import 'package:evidyalaya/screens/director/classes/subjects/notes.dart';
@@ -9,9 +10,8 @@ import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DirectorClassSubjects extends StatelessWidget {
-  final int classId;
-  const DirectorClassSubjects({super.key, required this.classId});
+class TeacherSubjects extends StatelessWidget {
+  const TeacherSubjects({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +27,9 @@ class DirectorClassSubjects extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          changeScreen(
-              context,
-              DirectorClassAddSubject(
-                classId: classId,
-              ));
-        },
-        child: const Icon(Icons.add),
-      ),
       body: FutureBuilder(
-          future: DirectorMySQLHelper.getSubjectList(
-              blocProvider.domainName, classId),
+          future: TeaherMySQLHelper.getSubjectList(
+              blocProvider.domainName, blocProvider.userId),
           builder: (context, snapshot) {
             if (snapshot.hasError) return const ErrorScreen();
             if (!snapshot.hasData) {

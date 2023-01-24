@@ -1,17 +1,18 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
-import 'package:evidyalaya/models/subject_model.dart';
-import 'package:evidyalaya/screens/director/classes/subjects/director_class_add_subject.dart';
-import 'package:evidyalaya/screens/director/classes/subjects/notes.dart';
+import 'package:evidyalaya/database/teacher_my_sql_helper.dart';
+import 'package:evidyalaya/models/user_model.dart';
+import 'package:evidyalaya/screens/director/student/director_add_student.dart';
+import 'package:evidyalaya/screens/show_profile.dart';
+import 'package:evidyalaya/screens/teacher/teacher_add_student.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DirectorClassSubjects extends StatelessWidget {
-  final int classId;
-  const DirectorClassSubjects({super.key, required this.classId});
+class TeacherStudents extends StatelessWidget {
+  const TeacherStudents({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class DirectorClassSubjects extends StatelessWidget {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Subjetcs',
+            'Students',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -29,28 +30,24 @@ class DirectorClassSubjects extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          changeScreen(
-              context,
-              DirectorClassAddSubject(
-                classId: classId,
-              ));
+          changeScreen(context, const TeacherAddStudent());
         },
         child: const Icon(Icons.add),
       ),
       body: FutureBuilder(
-          future: DirectorMySQLHelper.getSubjectList(
-              blocProvider.domainName, classId),
+          future: TeaherMySQLHelper.getStudentList(
+              blocProvider.domainName, blocProvider.userId),
           builder: (context, snapshot) {
             if (snapshot.hasError) return const ErrorScreen();
             if (!snapshot.hasData) {
               return const Loading();
             } else {
-              List<SubjectModel> list = snapshot.data!;
+              List<UserModel> list = snapshot.data!;
 
               if (list.isEmpty) {
                 return Center(
                   child: Text(
-                    'No Subject Exists !!!',
+                    'No Student Exists !!!',
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 );
@@ -58,15 +55,20 @@ class DirectorClassSubjects extends StatelessWidget {
               return ListView.builder(
                   itemCount: list.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        onTap: () {
-                          changeScreen(
-                              context, Notes(subjectModel: list[index]));
-                        },
-                        leading: CircleAvatar(child: Text(list[index].name[0])),
-                        title: Text(list[index].name),
+                    return GestureDetector(
+                      onTap: () {
+                        changeScreen(
+                            context, ShowProfile(userModel: list[index]));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(list[index].profilePicture),
+                          ),
+                          title: Text(list[index].name),
+                        ),
                       ),
                     );
                   });

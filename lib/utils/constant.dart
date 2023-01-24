@@ -47,7 +47,7 @@ const Map<String, String> extToImage = {
   '.pdf': 'images/pdf.png',
   '.ppt': 'images/ppt.png',
   '.pptx': 'images/ppt.png',
-  '.doc': 'images/pdf.doc',
+  '.doc': 'images/doc.png',
   '.docx': 'images/doc.png',
   '.xls': 'images/excel.doc',
   '.xlsx': 'images/excel.png',
@@ -55,3 +55,5 @@ const Map<String, String> extToImage = {
   '.mp4': 'images/video.png',
   '.mp3': 'images/audio.png',
 };
+const String defaultProfilePicture =
+    'https://2.bp.blogspot.com/-BVgTOe82aaI/VZln4Ny-LPI/AAAAAAAAA6Y/hKchnruxKtg/s1600/2000px-User_icon_2.svg.png';

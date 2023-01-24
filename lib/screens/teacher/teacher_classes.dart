@@ -1,56 +1,46 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
-import 'package:evidyalaya/models/subject_model.dart';
-import 'package:evidyalaya/screens/director/classes/subjects/director_class_add_subject.dart';
-import 'package:evidyalaya/screens/director/classes/subjects/notes.dart';
+import 'package:evidyalaya/database/teacher_my_sql_helper.dart';
+import 'package:evidyalaya/models/class_model.dart';
+import 'package:evidyalaya/screens/director/classes/director_add_class.dart';
+import 'package:evidyalaya/screens/director/classes/director_class_subjects.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DirectorClassSubjects extends StatelessWidget {
-  final int classId;
-  const DirectorClassSubjects({super.key, required this.classId});
+class TeacherClasses extends StatelessWidget {
+  const TeacherClasses({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final blocProvider = BlocProvider.of<AuthCubit>(context);
+    final bloc = BlocProvider.of<AuthCubit>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Subjetcs',
+            'Classes',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          changeScreen(
-              context,
-              DirectorClassAddSubject(
-                classId: classId,
-              ));
-        },
-        child: const Icon(Icons.add),
-      ),
       body: FutureBuilder(
-          future: DirectorMySQLHelper.getSubjectList(
-              blocProvider.domainName, classId),
+          future: TeaherMySQLHelper.getClassList(
+              bloc.domainName, bloc.userModel!.id),
           builder: (context, snapshot) {
             if (snapshot.hasError) return const ErrorScreen();
             if (!snapshot.hasData) {
               return const Loading();
             } else {
-              List<SubjectModel> list = snapshot.data!;
+              List<ClassModel> list = snapshot.data!;
 
               if (list.isEmpty) {
                 return Center(
                   child: Text(
-                    'No Subject Exists !!!',
+                    'No Student Exists !!!',
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 );
@@ -63,9 +53,12 @@ class DirectorClassSubjects extends StatelessWidget {
                       child: ListTile(
                         onTap: () {
                           changeScreen(
-                              context, Notes(subjectModel: list[index]));
+                              context,
+                              DirectorClassSubjects(
+                                classId: list[index].id,
+                              ));
                         },
-                        leading: CircleAvatar(child: Text(list[index].name[0])),
+                        leading: const Icon(Icons.school),
                         title: Text(list[index].name),
                       ),
                     );
