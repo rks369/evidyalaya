@@ -85,6 +85,18 @@ class DirectorAddStudent extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
+                  DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Class',
+                        hintText: 'Select Class ',
+                        prefixIcon: Icon(Icons.class_),
+                      ),
+                      items: [],
+                      onChanged: (value) {}),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   TextFormField(
                     controller: roll,
                     validator: (value) {
