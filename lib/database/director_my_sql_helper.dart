@@ -142,7 +142,6 @@ class DirectorMySQLHelper {
       )
           .then((result) {
         for (var row in result) {
-          print(row);
           teacherList.add(SubjectModel(
               id: row['subject_id'],
               classId: row['class_id'],

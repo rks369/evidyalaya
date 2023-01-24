@@ -57,7 +57,7 @@ class ContactUs extends StatelessWidget {
                     height: 16,
                   ),
                   SimpleTile(
-                    title: "admin@assetsyn.tech",
+                    title: "admin@evidyalaya.in",
                     ontap: () async {
                       await launchUrl(
                         Uri(

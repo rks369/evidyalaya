@@ -1,7 +1,4 @@
 import 'package:evidyalaya/screens/director/director_chat.dart';
-import 'package:evidyalaya/screens/director/director_classes.dart';
-import 'package:evidyalaya/screens/director/director_students.dart';
-import 'package:evidyalaya/screens/director/director_teachres.dart';
 import 'package:evidyalaya/screens/teacher/teacher_classes.dart';
 import 'package:evidyalaya/screens/teacher/teacher_students.dart';
 import 'package:evidyalaya/screens/teacher/teacher_subject.dart';

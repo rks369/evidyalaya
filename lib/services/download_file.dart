@@ -1,11 +1,6 @@
-import 'dart:io';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:open_app_file/open_app_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 Future openFile(String url, String fileName) async {
   await downlaodFile(url, fileName);

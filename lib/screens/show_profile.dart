@@ -1,4 +1,3 @@
-import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/bloc/connection_cubit.dart';
 import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/widgets/error.dart';
@@ -8,7 +7,6 @@ import 'package:evidyalaya/widgets/simple_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class ShowProfile extends StatelessWidget {
   final UserModel userModel;
@@ -61,8 +59,11 @@ class ShowProfile extends StatelessWidget {
                     firsticon: const Icon(
                       Icons.verified,
                     ),
-                    lasticon: const Icon(
-                      Icons.arrow_forward_ios,
+                    lasticon: const Visibility(
+                      visible: false,
+                      child: Icon(
+                        Icons.arrow_forward_ios,
+                      ),
                     ),
                   ),
                   SimpleTile(
@@ -71,28 +72,51 @@ class ShowProfile extends StatelessWidget {
                     firsticon: const Icon(
                       Icons.person,
                     ),
-                    lasticon: const Icon(
-                      Icons.arrow_forward_ios,
+                    lasticon: const Visibility(
+                      visible: false,
+                      child: Icon(
+                        Icons.arrow_forward_ios,
+                      ),
                     ),
                   ),
                   SimpleTile(
                     title: userModel.phone,
-                    ontap: () {},
+                    ontap: () async {
+                      await launchUrl(
+                        Uri(
+                          scheme: 'tel',
+                          path: userModel.phone,
+                        ),
+                      );
+                    },
                     firsticon: const Icon(
                       Icons.phone,
                     ),
-                    lasticon: const Icon(
-                      Icons.arrow_forward_ios,
+                    lasticon: const Visibility(
+                      visible: false,
+                      child: Icon(
+                        Icons.arrow_forward_ios,
+                      ),
                     ),
                   ),
                   SimpleTile(
                     title: userModel.email,
-                    ontap: () {},
+                    ontap: () async {
+                      await launchUrl(
+                        Uri(
+                          scheme: 'mailto',
+                          path: userModel.email,
+                        ),
+                      );
+                    },
                     firsticon: const Icon(
                       Icons.email,
                     ),
-                    lasticon: const Icon(
-                      Icons.arrow_forward_ios,
+                    lasticon: const Visibility(
+                      visible: false,
+                      child: Icon(
+                        Icons.arrow_forward_ios,
+                      ),
                     ),
                   ),
                 ],

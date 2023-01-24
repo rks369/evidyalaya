@@ -1,8 +1,6 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
-import 'package:evidyalaya/database/director_my_sql_helper.dart';
 import 'package:evidyalaya/database/teacher_my_sql_helper.dart';
 import 'package:evidyalaya/models/class_model.dart';
-import 'package:evidyalaya/screens/director/classes/director_add_class.dart';
 import 'package:evidyalaya/screens/director/classes/director_class_subjects.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';

@@ -1,7 +1,6 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
 import 'package:evidyalaya/models/class_model.dart';
-import 'package:evidyalaya/models/user_model.dart';
 import 'package:evidyalaya/screens/director/chat/group_chat.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
@@ -9,7 +8,6 @@ import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'chat.dart';
 
 class DirectorChatClasses extends StatelessWidget {
   const DirectorChatClasses({super.key});

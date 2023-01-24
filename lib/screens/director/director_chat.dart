@@ -21,7 +21,7 @@ class DirectorChat extends StatelessWidget {
               ),
             ),
           ),
-          bottom: TabBar(indicatorColor: Theme.of(context).primaryColor, tabs: [
+          bottom: TabBar(indicatorColor: Theme.of(context).primaryColor, tabs: const [
             Tab(
               icon: Icon(Icons.group),
               text: 'Classes',
