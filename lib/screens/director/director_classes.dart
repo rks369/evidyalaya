@@ -3,6 +3,9 @@ import 'package:evidyalaya/database/director_my_sql_helper.dart';
 import 'package:evidyalaya/models/class_model.dart';
 import 'package:evidyalaya/screens/director/classes/director_add_class.dart';
 import 'package:evidyalaya/screens/director/classes/director_class_subjects.dart';
+import 'package:evidyalaya/screens/director/classes/director_class_student.dart';
+import 'package:evidyalaya/screens/director/director_dashboard.dart';
+import 'package:evidyalaya/screens/teacher/teacher_students.dart';
 import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
@@ -56,11 +59,39 @@ class DirectorClasses extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                         onTap: () {
-                          changeScreen(
-                              context,
-                              DirectorClassSubjects(
-                                classId: list[index].id,
-                              ));
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return Center(
+                                  child: GridView.count(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10.0,
+                                    mainAxisSpacing: 10.0,
+                                    children: [
+                                      DashBoardTiles(
+                                          imagePath: 'images/student.png',
+                                          title: 'Students',
+                                          onPress: () {
+                                            changeScreen(
+                                                context,
+                                                DirectorClassStudents(
+                                                  classId: list[index].id,
+                                                ));
+                                          }),
+                                      DashBoardTiles(
+                                          imagePath: 'images/clipboard.png',
+                                          title: 'Subjects',
+                                          onPress: () {
+                                            changeScreen(
+                                                context,
+                                                DirectorClassSubjects(
+                                                  classId: list[index].id,
+                                                ));
+                                          }),
+                                    ],
+                                  ),
+                                );
+                              });
                         },
                         leading: const Icon(Icons.school),
                         title: Text(list[index].name),
