@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/database/director_my_sql_helper.dart';
 import 'package:evidyalaya/models/notes_model.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Notes extends StatefulWidget {
   final SubjectModel subjectModel;
@@ -30,7 +32,7 @@ class Notes extends StatefulWidget {
 }
 
 class _NotesState extends State<Notes> {
-  final ReceivePort _port = ReceivePort();
+  ReceivePort _port = ReceivePort();
 
   @override
   void initState() {

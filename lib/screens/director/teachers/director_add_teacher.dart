@@ -166,7 +166,8 @@ class DirectorAddTeacher extends StatelessWidget {
                                 domain +
                                 '.evidyalaya.in',
                             designation: 'Teacher',
-                            profilePicture: 'profilePicture');
+                            profilePicture: 'profilePicture',
+                            currentClass: -1);
 
                         DirectorMySQLHelper.addteacher(
                                 context, userModel, domain)

@@ -6,6 +6,7 @@ class UserModel {
   String userName;
   String designation;
   String profilePicture;
+  int currentClass;
 
   UserModel(
       {required this.id,
@@ -14,5 +15,6 @@ class UserModel {
       required this.phone,
       required this.userName,
       required this.designation,
-      required this.profilePicture});
+      required this.profilePicture,
+      required this.currentClass});
 }

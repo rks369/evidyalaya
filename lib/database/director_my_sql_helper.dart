@@ -28,7 +28,7 @@ class DirectorMySQLHelper {
               phone: row['phone'],
               userName: row['username'],
               designation: row['designation'],
-              profilePicture: row['profile_picture']));
+              profilePicture: row['profile_picture'],currentClass: row['current_class']));
         }
         return studentList;
       }).onError((error, stackTrace) {
@@ -55,7 +55,7 @@ class DirectorMySQLHelper {
               phone: row['phone'],
               userName: row['username'],
               designation: row['designation'],
-              profilePicture: row['profile_picture']));
+              profilePicture: row['profile_picture'],currentClass: row['current_class']));
         }
         return studentList;
       }).onError((error, stackTrace) {
@@ -80,7 +80,7 @@ class DirectorMySQLHelper {
               phone: row['phone'],
               userName: row['username'],
               designation: row['designation'],
-              profilePicture: row['profile_picture']));
+              profilePicture: row['profile_picture'],currentClass: row['current_class']));
         }
         return teacherList;
       }).onError((error, stackTrace) {
@@ -321,7 +321,7 @@ class DirectorMySQLHelper {
   }
 
   static Future<void> addStudent(BuildContext context, UserModel userModel,
-      String domain, int currentClass) {
+      String domain) {
     String password = 'student@123';
     String userName = userModel.userName;
     final hmacSha256 = Hmac(sha256, secretKey); // HMAC-SHA256
@@ -337,7 +337,7 @@ class DirectorMySQLHelper {
             userModel.userName,
             userModel.designation,
             defaultProfilePicture,
-            currentClass
+            userModel.currentClass
           ]).then((value) async {
         conn.close();
         final message = Message()

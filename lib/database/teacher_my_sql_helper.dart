@@ -68,7 +68,7 @@ class TeaherMySQLHelper {
               phone: row['phone'],
               userName: row['username'],
               designation: row['designation'],
-              profilePicture: row['profile_picture']));
+              profilePicture: row['profile_picture'],currentClass: row['current_class']));
         }
         return studentList;
       }).onError((error, stackTrace) {

@@ -7,6 +7,7 @@ import 'package:evidyalaya/screens/director/classes/director_class_student.dart'
 import 'package:evidyalaya/screens/director/director_dashboard.dart';
 import 'package:evidyalaya/screens/teacher/teacher_students.dart';
 import 'package:evidyalaya/services/change_screen.dart';
+import 'package:evidyalaya/widgets/dashboard_tile.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';

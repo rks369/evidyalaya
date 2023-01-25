@@ -206,10 +206,10 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                                 domain +
                                 '.evidyalaya.in',
                             designation: 'Student',
-                            profilePicture: 'profilePicture');
+                            profilePicture: 'profilePicture',currentClass: currentClass);
 
                         DirectorMySQLHelper.addStudent(
-                                context, userModel, domain, currentClass)
+                                context, userModel, domain)
                             .then((value) {
                           Navigator.pop(context);
                         });

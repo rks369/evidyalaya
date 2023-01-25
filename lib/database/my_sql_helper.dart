@@ -60,7 +60,7 @@ class MySQLHelper {
                 phone: value.first['phone'],
                 userName: value.first['username'],
                 designation: value.first['designation'],
-                profilePicture: value.first['profile_picture']);
+                profilePicture: value.first['profile_picture'],currentClass: value.first['current_class']);
           }
         }
       }).onError((error, stackTrace) {
@@ -84,11 +84,13 @@ class MySQLHelper {
               phone: value.first['phone'],
               userName: value.first['username'],
               designation: value.first['designation'],
-              profilePicture: value.first['profile_picture']);
+              profilePicture: value.first['profile_picture'],currentClass: value.first['current_class']);
         }
       }).onError((error, stackTrace) {
         return null;
       });
     });
   }
+
+  
 }
