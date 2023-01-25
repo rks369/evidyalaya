@@ -21,178 +21,183 @@ class ResetPassword extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Center(
-          child: Card(
-            margin: const EdgeInsets.all(16.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                    ),
-                    const Icon(
-                      Icons.school_rounded,
-                      size: 75,
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      'E-Vidyalaya ',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      'Reset Password',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    const Text(
-                      'to Change Your Password',
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: userName,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please Enter A Email';
-                        } else if (!EmailValidator.validate(value)) {
-                          return 'Please Enter A Valid Email';
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter The User ID ...',
-                        labelText: 'User ID',
+          child: SingleChildScrollView(
+            child: Card(
+              margin: const EdgeInsets.all(16.0),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 50,
+                        width: double.infinity,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            changeScreen(context, const Login());
-                          },
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-                      onPressed: () async {
-                        String userId = userName.text;
-
-                        String domain = userId.split('@')[1].split('.')[0];
-                        await MySQLHelper.domianExists(context, domain)
-                            .then((result) {
-                          if (result) {
-                            MySqlConnection.connect(
-                                    getConnctionSettings(domain))
-                                .then(
-                              (conn) async {
-                                conn.query(
-                                    'SELECT * FROM `users` WHERE users.username = ?;',
-                                    [userId]).then(
-                                  (result) {
-                                    if (result.isEmpty) {
-                                      showErrorMessage(
-                                          context, "No User Exits");
-                                    } else {
-                                      showProgressDialog(context);
-                                      String password =
-                                          RandomPasswordGenerator()
-                                              .randomPassword(
-                                                  letters: true,
-                                                  uppercase: true,
-                                                  number: true,
-                                                  passwordLength: 10);
-                                      final hmacSha256 = Hmac(
-                                          sha256, secretKey); // HMAC-SHA256
-                                      final passwordDigest = hmacSha256
-                                          .convert(utf8.encode(password))
-                                          .toString();
-                                      final message = Message()
-                                        ..from = senderAdress
-                                        ..recipients.add(result.first['email'])
-                                        ..subject = 'E-Vidyalaya Password Reset'
-                                        ..text =
-                                            'Welcome To E-vidyalaya Sync.\nPassword Reset For . \n\n\nUser Id  : ${userName.text}\nPassword : $password';
-
-                                      showSuccessMessage(context,
-                                          "Mail Send To ${result.first['email']}");
-                                      send(message, smtpServer).whenComplete(
-                                        () async {
-                                          conn.query(
-                                              'UPDATE `users` SET `password`=? WHERE username = ?;',
-                                              [
-                                                passwordDigest,
-                                                userName.text
-                                              ]).then(
-                                            (value) {
-                                              if (value.insertId != null) {
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                              } else {
-                                                showErrorMessage(context,
-                                                    'Some Error Occured');
-                                                Navigator.pop(context);
-                                              }
-                                            },
-                                          ).onError((error, stackTrace) {
-                                            showErrorMessage(context,
-                                                "Some Error occured $error");
-                                            Navigator.pop(context);
-                                          });
-                                        },
-                                      );
-                                    }
-                                  },
-                                );
-                              },
-                            ).onError(
-                              (error, stackTrace) {
-                                showErrorMessage(
-                                    context, "Some Error occured $error");
-                              },
-                            );
+                      const Icon(
+                        Icons.school_rounded,
+                        size: 75,
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'E-Vidyalaya ',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        'Reset Password',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text(
+                        'to Change Your Password',
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      TextFormField(
+                        controller: userName,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please Enter A Email';
+                          } else if (!EmailValidator.validate(value)) {
+                            return 'Please Enter A Valid Email';
                           } else {
-                            showErrorMessage(
-                                context, 'Please Enter A Valid Domian Name');
+                            return null;
                           }
-                        }).onError((error, stackTrace) {
-                          showErrorMessage(
-                              context, 'Soe=mething Went Wrong !$error');
-                        });
-                      },
-                      child: const Text(
-                        'Reset',
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter The User ID ...',
+                          labelText: 'User ID',
+                        ),
                       ),
-                    )
-                  ],
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              changeScreen(context, const Login());
+                            },
+                            child: Text(
+                              'Login',
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                        onPressed: () async {
+                          String userId = userName.text;
+
+                          String domain = userId.split('@')[1].split('.')[0];
+                          await MySQLHelper.domianExists(context, domain)
+                              .then((result) {
+                            if (result) {
+                              MySqlConnection.connect(
+                                      getConnctionSettings(domain))
+                                  .then(
+                                (conn) async {
+                                  conn.query(
+                                      'SELECT * FROM `users` WHERE users.username = ?;',
+                                      [userId]).then(
+                                    (result) {
+                                      if (result.isEmpty) {
+                                        showErrorMessage(
+                                            context, "No User Exits");
+                                      } else {
+                                        showProgressDialog(context);
+                                        String password =
+                                            RandomPasswordGenerator()
+                                                .randomPassword(
+                                                    letters: true,
+                                                    uppercase: true,
+                                                    number: true,
+                                                    passwordLength: 10);
+                                        final hmacSha256 = Hmac(
+                                            sha256, secretKey); // HMAC-SHA256
+                                        final passwordDigest = hmacSha256
+                                            .convert(utf8.encode(password))
+                                            .toString();
+                                        final message = Message()
+                                          ..from = senderAdress
+                                          ..recipients
+                                              .add(result.first['email'])
+                                          ..subject =
+                                              'E-Vidyalaya Password Reset'
+                                          ..text =
+                                              'Welcome To E-vidyalaya Sync.\nPassword Reset For . \n\n\nUser Id  : ${userName.text}\nPassword : $password';
+
+                                        showSuccessMessage(context,
+                                            "Mail Send To ${result.first['email']}");
+                                        send(message, smtpServer).whenComplete(
+                                          () async {
+                                            conn.query(
+                                                'UPDATE `users` SET `password`=? WHERE username = ?;',
+                                                [
+                                                  passwordDigest,
+                                                  userName.text
+                                                ]).then(
+                                              (value) {
+                                                if (value.insertId != null) {
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                } else {
+                                                  showErrorMessage(context,
+                                                      'Some Error Occured');
+                                                  Navigator.pop(context);
+                                                }
+                                              },
+                                            ).onError((error, stackTrace) {
+                                              showErrorMessage(context,
+                                                  "Some Error occured $error");
+                                              Navigator.pop(context);
+                                            });
+                                          },
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
+                              ).onError(
+                                (error, stackTrace) {
+                                  showErrorMessage(
+                                      context, "Some Error occured $error");
+                                },
+                              );
+                            } else {
+                              showErrorMessage(
+                                  context, 'Please Enter A Valid Domian Name');
+                            }
+                          }).onError((error, stackTrace) {
+                            showErrorMessage(
+                                context, 'Soe=mething Went Wrong !$error');
+                          });
+                        },
+                        child: const Text(
+                          'Reset',
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

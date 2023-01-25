@@ -1,6 +1,9 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/bloc/connection_cubit.dart';
 import 'package:evidyalaya/models/user_model.dart';
+import 'package:evidyalaya/screens/auth/change_password.dart';
+import 'package:evidyalaya/screens/auth/forgot_password.dart';
+import 'package:evidyalaya/services/change_screen.dart';
 import 'package:evidyalaya/widgets/error.dart';
 import 'package:evidyalaya/widgets/loading.dart';
 import 'package:evidyalaya/widgets/no_internet.dart';
@@ -105,7 +108,9 @@ class UserProfile extends StatelessWidget {
                       lasticon: const Icon(
                         Icons.arrow_forward_ios,
                       ),
-                      ontap: () {},
+                      ontap: () {
+                        changeScreen(context, ChangePassword());
+                      },
                       firsticon: const Icon(
                         Icons.published_with_changes,
                       )),
