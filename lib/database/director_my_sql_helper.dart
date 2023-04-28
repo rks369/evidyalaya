@@ -28,7 +28,8 @@ class DirectorMySQLHelper {
               phone: row['phone'],
               userName: row['username'],
               designation: row['designation'],
-              profilePicture: row['profile_picture'],currentClass: row['current_class']));
+              profilePicture: row['profile_picture'],
+              currentClass: row['current_class']));
         }
         return studentList;
       }).onError((error, stackTrace) {
@@ -55,7 +56,8 @@ class DirectorMySQLHelper {
               phone: row['phone'],
               userName: row['username'],
               designation: row['designation'],
-              profilePicture: row['profile_picture'],currentClass: row['current_class']));
+              profilePicture: row['profile_picture'],
+              currentClass: row['current_class']));
         }
         return studentList;
       }).onError((error, stackTrace) {
@@ -80,7 +82,8 @@ class DirectorMySQLHelper {
               phone: row['phone'],
               userName: row['username'],
               designation: row['designation'],
-              profilePicture: row['profile_picture'],currentClass: row['current_class']));
+              profilePicture: row['profile_picture'],
+              currentClass: row['current_class']));
         }
         return teacherList;
       }).onError((error, stackTrace) {
@@ -281,7 +284,7 @@ class DirectorMySQLHelper {
   static Future<void> addteacher(
       BuildContext context, UserModel userModel, String domain) {
     String password = 'teacher@123';
-    String userName = userModel.userName;
+    String userName = userModel.userName.toLowerCase();
     final hmacSha256 = Hmac(sha256, secretKey); // HMAC-SHA256
     final passwordDigest = hmacSha256.convert(utf8.encode(password)).toString();
     return MySqlConnection.connect(getConnctionSettings(domain)).then((conn) {
@@ -320,10 +323,10 @@ class DirectorMySQLHelper {
     });
   }
 
-  static Future<void> addStudent(BuildContext context, UserModel userModel,
-      String domain) {
+  static Future<void> addStudent(
+      BuildContext context, UserModel userModel, String domain) {
     String password = 'student@123';
-    String userName = userModel.userName;
+    String userName = userModel.userName.toLowerCase();
     final hmacSha256 = Hmac(sha256, secretKey); // HMAC-SHA256
     final passwordDigest = hmacSha256.convert(utf8.encode(password)).toString();
     return MySqlConnection.connect(getConnctionSettings(domain)).then((conn) {

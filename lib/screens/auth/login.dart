@@ -124,7 +124,7 @@ class Login extends StatelessWidget {
                         onPressed: () async {
                           showProgressDialog(context);
                           if (formKey.currentState!.validate()) {
-                            String userId = email.text;
+                            String userId = email.text.toLowerCase();
                             String pass = password.text;
 
                             String domain = userId.split('@')[1].split('.')[0];
@@ -133,7 +133,7 @@ class Login extends StatelessWidget {
                               if (result) {
                                 MySQLHelper.login(context, userId, pass, domain)
                                     .then((userModel) {
-                                  blocProvider.login(userModel!,domain);
+                                  blocProvider.login(userModel!, domain);
                                   Navigator.pop(context);
                                   changeScreenReplacement(
                                       context, const Home());
