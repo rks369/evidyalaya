@@ -203,10 +203,10 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
                             userName: name.text.split(' ')[0] +
                                 roll.text +
                                 '@' +
-                                domain +
-                                '.evidyalaya.in',
+                                domain,
                             designation: 'Student',
-                            profilePicture: 'profilePicture',currentClass: currentClass);
+                            profilePicture: 'profilePicture',
+                            currentClass: currentClass);
 
                         DirectorMySQLHelper.addStudent(
                                 context, userModel, domain)

@@ -163,8 +163,7 @@ class DirectorAddTeacher extends StatelessWidget {
                             userName: name.text.split(' ')[0] +
                                 id.text +
                                 '@' +
-                                domain +
-                                '.evidyalaya.in',
+                                domain,
                             designation: 'Teacher',
                             profilePicture: 'profilePicture',
                             currentClass: -1);
