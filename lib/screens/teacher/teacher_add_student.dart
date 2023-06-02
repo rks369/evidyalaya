@@ -29,7 +29,9 @@ class _TeacherAddStudentState extends State<TeacherAddStudent> {
 
     TeaherMySQLHelper.getClassList(blocProvider.domainName, blocProvider.userId)
         .then((value) {
-      classList = value;
+      setState(() {
+        classList = value;
+      });
     });
   }
 

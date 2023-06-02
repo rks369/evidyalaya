@@ -5,9 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GroupChat extends StatelessWidget {
+  final String chatType;
   final int groupId;
   final String groupName;
-  const GroupChat({super.key, required this.groupId, required this.groupName});
+  const GroupChat(
+      {super.key,
+      required this.chatType,
+      required this.groupId,
+      required this.groupName});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,7 @@ class GroupChat extends StatelessWidget {
           Expanded(
             child: StreamBuilder<DocumentSnapshot>(
               stream: fireStore
-                  .collection('groupChat')
+                  .collection(chatType)
                   .doc(groupId.toString())
                   .snapshots(),
               builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -83,13 +88,13 @@ class GroupChat extends StatelessWidget {
               ElevatedButton(
                   onPressed: () {
                     fireStore
-                        .collection('groupChat')
+                        .collection(chatType)
                         .doc(groupId.toString())
                         .get()
                         .then((value) {
                       if (value.exists) {
                         fireStore
-                            .collection("groupChat")
+                            .collection(chatType)
                             .doc(groupId.toString())
                             .update({
                           'messages': FieldValue.arrayUnion([
@@ -105,7 +110,7 @@ class GroupChat extends StatelessWidget {
                         });
                       } else {
                         fireStore
-                            .collection("groupChat")
+                            .collection(chatType)
                             .doc(groupId.toString())
                             .set({
                           'messages': [

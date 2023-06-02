@@ -295,7 +295,7 @@ class DirectorMySQLHelper {
             userModel.email,
             userModel.phone,
             passwordDigest,
-            userModel.userName,
+            userName,
             userModel.designation,
             defaultProfilePicture
           ]).then((value) async {
@@ -337,7 +337,7 @@ class DirectorMySQLHelper {
             userModel.email,
             userModel.phone,
             passwordDigest,
-            userModel.userName,
+            userName,
             userModel.designation,
             defaultProfilePicture,
             userModel.currentClass

@@ -1,5 +1,6 @@
 import 'package:evidyalaya/bloc/auth_cubit.dart';
 import 'package:evidyalaya/models/user_model.dart';
+import 'package:evidyalaya/screens/auth/login.dart';
 import 'package:evidyalaya/screens/side_drawer/about_us.dart';
 import 'package:evidyalaya/screens/side_drawer/contact_us.dart';
 import 'package:evidyalaya/screens/side_drawer/privacy_policy.dart';
@@ -99,6 +100,7 @@ class SideDrawer extends StatelessWidget {
             title: const Text('Logout'),
             onTap: () {
               blocProvider.logout();
+              changeScreenReplacement(context, Login());
             },
           ),
         ]),

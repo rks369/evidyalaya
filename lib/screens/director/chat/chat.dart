@@ -24,6 +24,23 @@ class Chat extends StatelessWidget {
       chatId = '${userModel.id} ${blocProvider.userId}';
     }
 
+    fireStore.collection('message').doc(chatId).get().then((value) {
+      if (!value.exists) {
+        fireStore.collection("message").doc(chatId).set({
+          'messages': [
+            {
+              'msg': "Say Hello 👋",
+              'time': DateTime.now(),
+              'senderId': '-1',
+              'chatId': chatId
+            }
+          ]
+        }).then((value) {
+          msg.clear();
+        });
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -70,9 +87,11 @@ class Chat extends StatelessWidget {
                     reverse: true,
                     itemBuilder: (context, index) {
                       return MessageBubble(
-                          text: messages[index]['msg'],
-                          isMe: messages[index]['senderId'] ==
-                              blocProvider.userId);
+                        text: messages[index]['msg'],
+                        isMe:
+                            messages[index]['senderId'] == blocProvider.userId,
+                        isSystemMsg: messages[index]['senderId'] == '-1',
+                      );
                     });
               },
             ),

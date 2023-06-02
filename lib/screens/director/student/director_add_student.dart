@@ -29,7 +29,9 @@ class _DirectorAddStudentState extends State<DirectorAddStudent> {
     DirectorMySQLHelper.getClassList(
       blocProvider.domainName,
     ).then((value) {
-      classList = value;
+      setState(() {
+        classList = value;
+      });
     });
   }
 

@@ -45,6 +45,7 @@ class DirectorChatSubjects extends StatelessWidget {
                         changeScreen(
                             context,
                             GroupChat(
+                              chatType: 'classChat',
                               groupName: list[index].name,
                               groupId: list[index].id,
                             ));

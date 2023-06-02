@@ -8,7 +8,6 @@ import 'package:evidyalaya/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class DirectorChatClasses extends StatelessWidget {
   const DirectorChatClasses({super.key});
 
@@ -45,6 +44,7 @@ class DirectorChatClasses extends StatelessWidget {
                         changeScreen(
                             context,
                             GroupChat(
+                              chatType: 'subjectChat',
                               groupName: list[index].name,
                               groupId: list[index].id,
                             ));
